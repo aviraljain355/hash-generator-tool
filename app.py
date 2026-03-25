@@ -9,10 +9,12 @@ def calculate_hashes(file):
     sha1 = hashlib.sha1()
     sha256 = hashlib.sha256()
 
-    while chunk := file.read(4096):
-        md5.update(chunk)
-        sha1.update(chunk)
-        sha256.update(chunk)
+   chunk = file.read(4096)
+while chunk:
+    md5.update(chunk)
+    sha1.update(chunk)
+    sha256.update(chunk)
+    chunk = file.read(4096)
 
     return {
         "md5": md5.hexdigest(),
