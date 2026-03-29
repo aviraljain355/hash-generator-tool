@@ -8,7 +8,7 @@ def index():
     hash_result = None
 
     if request.method == "POST":
-        file = request.files["file"]
+        file = request.files.get("file")
 
         if file:
             hash_md5 = hashlib.md5()
@@ -31,6 +31,9 @@ def index():
 
     return render_template("index.html", hash_result=hash_result)
 
-    if __name__ == "__main__":
+
+if __name__ == "__main__":
     import os
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+            
