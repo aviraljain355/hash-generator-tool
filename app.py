@@ -3,40 +3,33 @@ import hashlib
 
 app = Flask(__name__)
 
-# ✅ THIS FUNCTION MUST BE PRESENT
-def calculate_hashes(file):
-    md5 = hashlib.md5()
-    sha1 = hashlib.sha1()
-    sha256 = hashlib.sha256()
-
-   chunk = file.read(4096)
-while chunk:
-    md5.update(chunk)
-    sha1.update(chunk)
-    sha256.update(chunk)
-    chunk = file.read(4096)
-
-    return {
-        "md5": md5.hexdigest(),
-        "sha1": sha1.hexdigest(),
-        "sha256": sha256.hexdigest()
-    }
-
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route("/", methods=["GET", "POST"])
 def index():
-    hashes = None
+    hash_result = None
 
-    if request.method == 'POST':
-        file = request.files['file']
+    if request.method == "POST":
+        file = request.files["file"]
+
         if file:
-            hashes = calculate_hashes(file)  # ✅ SAME NAME
+            hash_md5 = hashlib.md5()
+            hash_sha1 = hashlib.sha1()
+            hash_sha256 = hashlib.sha256()
 
-    return render_template('index.html', hashes=hashes)
+            while True:
+                chunk = file.read(4096)
+                if not chunk:
+                    break
+                hash_md5.update(chunk)
+                hash_sha1.update(chunk)
+                hash_sha256.update(chunk)
 
+            hash_result = {
+                "md5": hash_md5.hexdigest(),
+                "sha1": hash_sha1.hexdigest(),
+                "sha256": hash_sha256.hexdigest()
+            }
 
-
-import os
+    return render_template("index.html", hash_result=hash_result)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+    app.run(debug=True)
