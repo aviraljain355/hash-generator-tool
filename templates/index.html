@@ -1,48 +1,83 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
 <head>
-    <title>Hash Generator</title>
-    <style>
-        body {
-            background-color: #0f172a;
-            color: white;
-            font-family: Arial;
-            text-align: center;
-            padding-top: 50px;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Hash Generator | Adv Vipul Jain</title>
 
-        h2 {
-            color: #38bdf8;
-        }
+```
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-        input, button {
-            padding: 10px;
-            margin: 10px;
-            border-radius: 5px;
-            border: none;
-        }
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-        button {
-            background-color: #38bdf8;
-            color: black;
-            cursor: pointer;
-        }
+    .container {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        width: 400px;
+        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    }
 
-        button:hover {
-            background-color: #0ea5e9;
-        }
+    h1 {
+        margin-bottom: 20px;
+    }
 
-        .result {
-            margin-top: 20px;
-            color: #22c55e;
-            word-wrap: break-word;
-        }
-    </style>
+    input[type="file"] {
+        margin: 15px 0;
+    }
+
+    button {
+        background: #00c6ff;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #00e0ff;
+    }
+
+    .result {
+        margin-top: 20px;
+        text-align: left;
+        word-break: break-all;
+    }
+
+    .hash-box {
+        background: #111;
+        padding: 10px;
+        border-radius: 8px;
+        margin: 5px 0;
+    }
+</style>
+```
+
 </head>
+
 <body>
 
-<h2>🔐 File Hash Generator</h2>
+<div class="container">
+    <h1>🔐 File Hash Generator</h1>
 
+```
 <form method="POST" enctype="multipart/form-data">
     <input type="file" name="file" required><br>
     <button type="submit">Generate Hash</button>
@@ -50,16 +85,16 @@
 
 {% if hashes %}
 <div class="result">
-    <h3>MD5:</h3>
-    <p>{{ hashes.md5 }}</p>
+    <h3>Generated Hashes:</h3>
 
-    <h3>SHA1:</h3>
-    <p>{{ hashes.sha1 }}</p>
-
-    <h3>SHA256:</h3>
-    <p>{{ hashes.sha256 }}</p>
+    <div class="hash-box"><b>MD5:</b><br>{{ hashes.md5 }}</div>
+    <div class="hash-box"><b>SHA1:</b><br>{{ hashes.sha1 }}</div>
+    <div class="hash-box"><b>SHA256:</b><br>{{ hashes.sha256 }}</div>
 </div>
 {% endif %}
+```
+
+</div>
 
 </body>
 </html>
