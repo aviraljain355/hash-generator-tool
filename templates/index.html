@@ -1,98 +1,55 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Hash Generator | Adv Vipul Jain</title>
+    <title>Hash Generator & 65B Tool</title>
 
-```
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<style>
-    body {
-        margin: 0;
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-        color: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-
-    .container {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        padding: 40px;
-        border-radius: 15px;
-        text-align: center;
-        width: 400px;
-        box-shadow: 0 0 30px rgba(0,0,0,0.5);
-    }
-
-    h1 {
-        margin-bottom: 20px;
-    }
-
-    input[type="file"] {
-        margin: 15px 0;
-    }
-
-    button {
-        background: #00c6ff;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 8px;
-        color: #000;
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-
-    button:hover {
-        background: #00e0ff;
-    }
-
-    .result {
-        margin-top: 20px;
-        text-align: left;
-        word-break: break-all;
-    }
-
-    .hash-box {
-        background: #111;
-        padding: 10px;
-        border-radius: 8px;
-        margin: 5px 0;
-    }
-</style>
-```
-
+    <style>
+        body {
+            background-color: #f5f7fa;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h1>🔐 File Hash Generator</h1>
+<div class="container mt-5">
+    <div class="card p-4">
 
-```
-<form method="POST" enctype="multipart/form-data">
-    <input type="file" name="file" required><br>
-    <button type="submit">Generate Hash</button>
-</form>
+        <h2 class="text-center mb-4">🔐 File Hash Generator & 65B Tool</h2>
 
-{% if hashes %}
-<div class="result">
-    <h3>Generated Hashes:</h3>
+        <!-- FORM -->
+        <form method="POST" enctype="multipart/form-data" class="text-center">
+            <input type="file" name="file" class="form-control mb-3" required>
+            <button type="submit" class="btn btn-primary w-100">Generate Hash</button>
+        </form>
 
-    <div class="hash-box"><b>MD5:</b><br>{{ hashes.md5 }}</div>
-    <div class="hash-box"><b>SHA1:</b><br>{{ hashes.sha1 }}</div>
-    <div class="hash-box"><b>SHA256:</b><br>{{ hashes.sha256 }}</div>
-</div>
-{% endif %}
-```
+    </div>
+
+    <!-- RESULT -->
+    {% if hash_result %}
+    <div class="card p-4 mt-4 bg-white">
+        <h3 class="text-center">Hash Results</h3>
+
+        <p><b>File:</b> {{ hash_result.filename }}</p>
+        <p><b>MD5:</b> {{ hash_result.md5 }}</p>
+        <p><b>SHA1:</b> {{ hash_result.sha1 }}</p>
+        <p><b>SHA256:</b> {{ hash_result.sha256 }}</p>
+        <p><b>Time:</b> {{ hash_result.time }}</p>
+
+        <div class="text-center mt-3">
+            <a href="/download">
+                <button class="btn btn-success">Download 65B Certificate (PDF)</button>
+            </a>
+        </div>
+    </div>
+    {% endif %}
 
 </div>
 
