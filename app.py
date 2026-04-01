@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, send_file
 import hashlib
 import os
 from datetime import datetime
-from docx import Document
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
 
 app = Flask(__name__)
 
@@ -49,31 +50,40 @@ def download():
     if not data:
         return "No data available. Please generate hash first."
 
-    doc = Document()
+  file_path = "certificate.pdf"
 
-    doc.add_heading("CERTIFICATE UNDER SECTION 65B OF THE INDIAN EVIDENCE ACT, 1872", 0)
+doc = SimpleDocTemplate(file_path)
+styles = getSampleStyleSheet()
 
-    doc.add_paragraph("\n1. I hereby certify that the electronic record was produced from a computer system in the ordinary course of its operation.")
+content = []
 
-    doc.add_paragraph(f"\n2. File Name: {data['filename']}")
-    doc.add_paragraph(f"MD5 Hash: {data['md5']}")
-    doc.add_paragraph(f"SHA1 Hash: {data['sha1']}")
-    doc.add_paragraph(f"SHA256 Hash: {data['sha256']}")
+content.append(Paragraph("CERTIFICATE UNDER SECTION 65B OF INDIAN EVIDENCE ACT, 1872", styles["Title"]))
+content.append(Spacer(1, 20))
 
-    doc.add_paragraph(f"\n3. Date & Time of Generation: {data['time']}")
+content.append(Paragraph("1. I hereby certify that the electronic record was produced from a computer system in the ordinary course of its operation.", styles["Normal"]))
+content.append(Spacer(1, 10))
 
-    doc.add_paragraph("\n4. This certificate is issued under Section 65B of the Indian Evidence Act, 1872.")
+content.append(Paragraph(f"2. File Name: {data['filename']}", styles["Normal"]))
+content.append(Paragraph(f"MD5 Hash: {data['md5']}", styles["Normal"]))
+content.append(Paragraph(f"SHA1 Hash: {data['sha1']}", styles["Normal"]))
+content.append(Paragraph(f"SHA256 Hash: {data['sha256']}", styles["Normal"]))
+content.append(Spacer(1, 10))
 
-    doc.add_paragraph("\nPlace: Gwalior")
+content.append(Paragraph(f"3. Date & Time: {data['time']}", styles["Normal"]))
+content.append(Spacer(1, 20))
 
-    doc.add_paragraph("\nCertified by:")
-    doc.add_paragraph("Adv. Vipul Jain")
-    doc.add_paragraph("Cyber Law Consultant")
+content.append(Paragraph("4. This certificate is issued under Section 65B of the Indian Evidence Act, 1872.", styles["Normal"]))
+content.append(Spacer(1, 40))
 
-    file_path = "certificate.docx"
-    doc.save(file_path)
+content.append(Paragraph("Place: Gwalior", styles["Normal"]))
+content.append(Spacer(1, 20))
 
-    return send_file(file_path, as_attachment=True)
+content.append(Paragraph("Adv. Vipul Jain", styles["Normal"]))
+content.append(Paragraph("Cyber Law Consultant", styles["Normal"]))
+
+doc.build(content)
+
+return send_file(file_path, as_attachment=True)
 
 
 if __name__ == "__main__":
