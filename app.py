@@ -50,41 +50,40 @@ def download():
     if not data:
         return "No data available. Please generate hash first."
 
-  file_path = "certificate.pdf"
+    file_path = "certificate.pdf"
 
-doc = SimpleDocTemplate(file_path)
-styles = getSampleStyleSheet()
+    doc = SimpleDocTemplate(file_path)
+    styles = getSampleStyleSheet()
 
-content = []
+    content = []
 
-content.append(Paragraph("CERTIFICATE UNDER SECTION 65B OF INDIAN EVIDENCE ACT, 1872", styles["Title"]))
-content.append(Spacer(1, 20))
+    content.append(Paragraph("CERTIFICATE UNDER SECTION 65B OF INDIAN EVIDENCE ACT, 1872", styles["Title"]))
+    content.append(Spacer(1, 20))
 
-content.append(Paragraph("1. I hereby certify that the electronic record was produced from a computer system in the ordinary course of its operation.", styles["Normal"]))
-content.append(Spacer(1, 10))
+    content.append(Paragraph("1. I hereby certify that the electronic record was produced from a computer system in the ordinary course of its operation.", styles["Normal"]))
+    content.append(Spacer(1, 10))
 
-content.append(Paragraph(f"2. File Name: {data['filename']}", styles["Normal"]))
-content.append(Paragraph(f"MD5 Hash: {data['md5']}", styles["Normal"]))
-content.append(Paragraph(f"SHA1 Hash: {data['sha1']}", styles["Normal"]))
-content.append(Paragraph(f"SHA256 Hash: {data['sha256']}", styles["Normal"]))
-content.append(Spacer(1, 10))
+    content.append(Paragraph(f"2. File Name: {data['filename']}", styles["Normal"]))
+    content.append(Paragraph(f"MD5 Hash: {data['md5']}", styles["Normal"]))
+    content.append(Paragraph(f"SHA1 Hash: {data['sha1']}", styles["Normal"]))
+    content.append(Paragraph(f"SHA256 Hash: {data['sha256']}", styles["Normal"]))
+    content.append(Spacer(1, 10))
 
-content.append(Paragraph(f"3. Date & Time: {data['time']}", styles["Normal"]))
-content.append(Spacer(1, 20))
+    content.append(Paragraph(f"3. Date & Time: {data['time']}", styles["Normal"]))
+    content.append(Spacer(1, 20))
 
-content.append(Paragraph("4. This certificate is issued under Section 65B of the Indian Evidence Act, 1872.", styles["Normal"]))
-content.append(Spacer(1, 40))
+    content.append(Paragraph("4. This certificate is issued under Section 65B of the Indian Evidence Act, 1872.", styles["Normal"]))
+    content.append(Spacer(1, 40))
 
-content.append(Paragraph("Place: Gwalior", styles["Normal"]))
-content.append(Spacer(1, 20))
+    content.append(Paragraph("Place: Gwalior", styles["Normal"]))
+    content.append(Spacer(1, 20))
 
-content.append(Paragraph("Adv. Vipul Jain", styles["Normal"]))
-content.append(Paragraph("Cyber Law Consultant", styles["Normal"]))
+    content.append(Paragraph("Adv. Vipul Jain", styles["Normal"]))
+    content.append(Paragraph("Cyber Law Consultant", styles["Normal"]))
 
-doc.build(content)
+    doc.build(content)
 
-return send_file(file_path, as_attachment=True)
-
+    return send_file(file_path, as_attachment=True)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
