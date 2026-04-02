@@ -4,7 +4,9 @@ import os
 from datetime import datetime
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
-
+def detect_rules(df):
+    df["suspicious"] = df["amount"] > 50000
+    return df
 app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
@@ -84,7 +86,24 @@ def download():
     doc.build(content)
 
     return send_file(file_path, as_attachment=True)
+@app.route("/freeze", methods=["GET", "POST"])
+def freeze_tool():
+    result = None
 
+    if request.method == "POST":
+        file = request.files.get("file")
+
+        if file:
+            import pandas as pd
+            df = pd.read_csv(file)
+
+            df = detect_rules(df)
+            suspicious = df[df["suspicious"]]
+
+            result = suspicious.to_html()
+
+    return render_template("freeze.html", result=result)
+    
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
