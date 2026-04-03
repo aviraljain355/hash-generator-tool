@@ -14,8 +14,18 @@
 </form>
 
 {% if result %}
-    <h3>Suspicious Transactions</h3>
-    {{ result|safe }}
+<h3>Suspicious Transactions</h3>
+
+{{ result|safe }}
+
+<br><br>
+
+<a href="/download_freeze_pdf">
+    <button style="padding:10px 20px; background:red; color:white; border:none; border-radius:5px;">
+        📄 Download Freeze Application (PDF)
+    </button>
+</a>
+
 {% endif %}
 
 </body>
