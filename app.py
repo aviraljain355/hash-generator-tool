@@ -103,7 +103,47 @@ def freeze_tool():
             result = suspicious.to_html()
 
     return render_template("freeze.html", result=result)
-    
+    @app.route("/download_freeze_pdf")
+def download_freeze_pdf():
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+    from reportlab.lib.styles import getSampleStyleSheet
+
+    file_path = "freeze_application.pdf"
+
+    doc = SimpleDocTemplate(file_path)
+    styles = getSampleStyleSheet()
+
+    content = []
+
+    content.append(Paragraph("APPLICATION FOR BANK ACCOUNT FREEZE", styles["Title"]))
+    content.append(Spacer(1, 20))
+
+    content.append(Paragraph("To,", styles["Normal"]))
+    content.append(Paragraph("The Branch Manager,", styles["Normal"]))
+    content.append(Paragraph("[Bank Name]", styles["Normal"]))
+    content.append(Spacer(1, 10))
+
+    content.append(Paragraph("Subject: Request for freezing of bank account due to suspicious transactions.", styles["Normal"]))
+    content.append(Spacer(1, 10))
+
+    content.append(Paragraph("Respected Sir/Madam,", styles["Normal"]))
+    content.append(Spacer(1, 10))
+
+    content.append(Paragraph("I hereby request you to freeze my bank account immediately as suspicious transactions have been detected.", styles["Normal"]))
+    content.append(Spacer(1, 10))
+
+    content.append(Paragraph("Details of suspicious transactions have been identified using cyber analysis tools.", styles["Normal"]))
+    content.append(Spacer(1, 10))
+
+    content.append(Paragraph("Kindly take immediate action to prevent further financial loss.", styles["Normal"]))
+    content.append(Spacer(1, 20))
+
+    content.append(Paragraph("Thanking You,", styles["Normal"]))
+    content.append(Paragraph("Adv. Vipul Jain", styles["Normal"]))
+
+    doc.build(content)
+
+    return send_file(file_path, as_attachment=True)
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
