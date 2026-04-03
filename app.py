@@ -5,7 +5,16 @@ from datetime import datetime
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 def detect_rules(df):
-    df["suspicious"] = df["amount"] > 50000
+    df["rule_high_amount"] = df["amount"] > 50000
+    df["rule_night_time"] = df["time"].astype(str).str.contains("00:|01:|02:|03:")
+    df["rule_refund_large"] = (df["type"] == "refund") & (df["amount"] > 10000)
+
+    df["suspicious"] = df[[
+        "rule_high_amount",
+        "rule_night_time",
+        "rule_refund_large"
+    ]].any(axis=1)
+
     return df
 app = Flask(__name__)
 
@@ -86,24 +95,8 @@ def download():
     doc.build(content)
 
     return send_file(file_path, as_attachment=True)
-@app.route("/freeze", methods=["GET", "POST"])
-def freeze_tool():
-    result = None
-
-    if request.method == "POST":
-        file = request.files.get("file")
-
-        if file:
-            import pandas as pd
-            df = pd.read_csv(file)
-
-            df = detect_rules(df)
-            suspicious = df[df["suspicious"]]
-
-            result = suspicious.to_html()
-
-    return render_template("freeze.html", result=result)
-    @app.route("/download_freeze_pdf")
+    
+@app.route("/download_freeze_pdf")
 def download_freeze_pdf():
     from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
     from reportlab.lib.styles import getSampleStyleSheet
@@ -121,24 +114,13 @@ def download_freeze_pdf():
     content.append(Paragraph("To,", styles["Normal"]))
     content.append(Paragraph("The Branch Manager,", styles["Normal"]))
     content.append(Paragraph("[Bank Name]", styles["Normal"]))
+
     content.append(Spacer(1, 10))
 
-    content.append(Paragraph("Subject: Request for freezing of bank account due to suspicious transactions.", styles["Normal"]))
-    content.append(Spacer(1, 10))
+    content.append(Paragraph("Subject: Request for freezing of bank account.", styles["Normal"]))
 
-    content.append(Paragraph("Respected Sir/Madam,", styles["Normal"]))
-    content.append(Spacer(1, 10))
-
-    content.append(Paragraph("I hereby request you to freeze my bank account immediately as suspicious transactions have been detected.", styles["Normal"]))
-    content.append(Spacer(1, 10))
-
-    content.append(Paragraph("Details of suspicious transactions have been identified using cyber analysis tools.", styles["Normal"]))
-    content.append(Spacer(1, 10))
-
-    content.append(Paragraph("Kindly take immediate action to prevent further financial loss.", styles["Normal"]))
     content.append(Spacer(1, 20))
 
-    content.append(Paragraph("Thanking You,", styles["Normal"]))
     content.append(Paragraph("Adv. Vipul Jain", styles["Normal"]))
 
     doc.build(content)
