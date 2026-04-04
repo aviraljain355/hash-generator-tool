@@ -128,7 +128,7 @@ def download_freeze_pdf():
     return send_file(file_path, as_attachment=True)
     
     @app.route("/freeze", methods=["GET", "POST"])
-def freeze_tool():
+    def freeze_tool():
     result = None
 
     if request.method == "POST":
