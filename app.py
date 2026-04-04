@@ -126,6 +126,24 @@ def download_freeze_pdf():
     doc.build(content)
 
     return send_file(file_path, as_attachment=True)
+    
+    @app.route("/freeze", methods=["GET", "POST"])
+def freeze_tool():
+    result = None
+
+    if request.method == "POST":
+        file = request.files.get("file")
+
+        if file:
+            import pandas as pd
+            df = pd.read_csv(file)
+
+            df = detect_rules(df)
+            suspicious = df[df["suspicious"]]
+
+            result = suspicious.to_html()
+
+    return render_template("freeze.html", result=result)
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
