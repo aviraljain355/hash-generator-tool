@@ -98,9 +98,6 @@ def download():
     
 @app.route("/download_freeze_pdf")
 def download_freeze_pdf():
-    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-    from reportlab.lib.styles import getSampleStyleSheet
-
     file_path = "freeze_application.pdf"
 
     doc = SimpleDocTemplate(file_path)
