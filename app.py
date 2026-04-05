@@ -124,21 +124,22 @@ def download_freeze_pdf():
 
     return send_file(file_path, as_attachment=True)
     
-   @app.route("/freeze", methods=["GET", "POST"])
+     import pandas as pd   
+
+@app.route("/freeze", methods=["GET", "POST"])
 def freeze_tool():
     result = None
 
     if request.method == "POST":
         file = request.files.get("file")
 
-if file:
-    import pandas as pd
-    df = pd.read_csv(file)
+        if file:
+            df = pd.read_csv(file)
 
-    df = detect_rules(df)
-    suspicious = df[df["suspicious"]]
+            df = detect_rules(df)
+            suspicious = df[df["suspicious"]]
 
-    result = suspicious.to_html()
+            result = suspicious.to_html()
 
     return render_template("freeze.html", result=result)
 if __name__ == "__main__":
