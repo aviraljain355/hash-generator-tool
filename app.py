@@ -4,6 +4,8 @@ import os
 from datetime import datetime
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
+
+import pandas as pd
 def detect_rules(df):
     df["rule_high_amount"] = df["amount"] > 50000
     df["rule_night_time"] = df["time"].astype(str).str.contains("00:|01:|02:|03:")
@@ -124,7 +126,6 @@ def download_freeze_pdf():
 
     return send_file(file_path, as_attachment=True)
     
-     import pandas as pd   
 
 @app.route("/freeze", methods=["GET", "POST"])
 def freeze_tool():
