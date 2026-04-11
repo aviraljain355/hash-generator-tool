@@ -26,30 +26,36 @@
 
         <!-- FORM -->
         <form method="POST" enctype="multipart/form-data" class="text-center">
+            <input type="text" name="username" class="form-control mb-3" placeholder="Enter your name" required>
             <input type="file" name="file" class="form-control mb-3" required>
+        
             <button type="submit" class="btn btn-primary w-100">Generate Hash</button>
         </form>
 
     </div>
 
     <!-- RESULT -->
-    {% if hash_result %}
-    <div class="card p-4 mt-4 bg-white">
-        <h3 class="text-center">Hash Results</h3>
+   {% if hash_result %}
+<div class="card p-4 mt-4 bg-white">
 
-        <p><b>File:</b> {{ hash_result.filename }}</p>
-        <p><b>MD5:</b> {{ hash_result.md5 }}</p>
-        <p><b>SHA1:</b> {{ hash_result.sha1 }}</p>
-        <p><b>SHA256:</b> {{ hash_result.sha256 }}</p>
-        <p><b>Time:</b> {{ hash_result.time }}</p>
+    <p><strong>Generated for:</strong> {{ username }}</p>
 
-        <div class="text-center mt-3">
-            <a href="/download">
-                <button class="btn btn-success">Download 65B Certificate (PDF)</button>
-            </a>
-        </div>
+    <h3 class="text-center">Hash Results</h3>
+
+    <p><b>File:</b> {{ hash_result.filename }}</p>
+    <p><b>MD5:</b> {{ hash_result.md5 }}</p>
+    <p><b>SHA1:</b> {{ hash_result.sha1 }}</p>
+    <p><b>SHA256:</b> {{ hash_result.sha256 }}</p>
+    <p><b>Time:</b> {{ hash_result.time }}</p>
+
+    <div class="text-center mt-3">
+        <a href="/download">
+            <button class="btn btn-success">Download 65B Certificate (PDF)</button>
+        </a>
     </div>
-    {% endif %}
+
+</div>
+{% endif %}
 
 </div>
 
