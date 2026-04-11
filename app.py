@@ -22,9 +22,11 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    username = None
     hash_result = None
 
     if request.method == "POST":
+        username = request.form.get("username")
         file = request.files.get("file")
 
         if file:
@@ -53,7 +55,7 @@ def index():
             # Store data for certificate
             app.config["LAST_RESULT"] = hash_result
 
-    return render_template("index.html", hash_result=hash_result)
+    return render_template("index.html", hash_result=hash_result, username=username)
 
 
 @app.route("/download")
