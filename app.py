@@ -44,7 +44,7 @@ def index():
                 hash_sha1.update(chunk)
                 hash_sha256.update(chunk)
 
-           hash_result = {
+ hash_result = {
     "filename": filename,
     "md5": hash_md5.hexdigest(),
     "sha1": hash_sha1.hexdigest(),
