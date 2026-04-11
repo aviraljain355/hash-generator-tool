@@ -44,18 +44,19 @@ if file:
         hash_sha1.update(chunk)
         hash_sha256.update(chunk)
 
-    hash_result = {
-        "filename": filename,
-        "md5": hash_md5.hexdigest(),
-        "sha1": hash_sha1.hexdigest(),
-        "sha256": hash_sha256.hexdigest(),
-        "time": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
-        "username": username
-    }
-            # Store data for certificate
-            app.config["LAST_RESULT"] = hash_result
+   hash_result = {
+    "filename": filename,
+    "md5": hash_md5.hexdigest(),
+    "sha1": hash_sha1.hexdigest(),
+    "sha256": hash_sha256.hexdigest(),
+    "time": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
+    "username": username
+}
 
-    return render_template("index.html", hash_result=hash_result, username=username)
+# Store data for certificate
+app.config["LAST_RESULT"] = hash_result   
+
+return render_template("index.html", hash_result=hash_result, username=username)
 
 
 @app.route("/download")
