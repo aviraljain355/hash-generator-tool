@@ -44,13 +44,14 @@ def index():
                 hash_sha1.update(chunk)
                 hash_sha256.update(chunk)
 
-            hash_result = {
-                "filename": filename,
-                "md5": hash_md5.hexdigest(),
-                "sha1": hash_sha1.hexdigest(),
-                "sha256": hash_sha256.hexdigest(),
-                "time": datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-            }
+           hash_result = {
+    "filename": filename,
+    "md5": hash_md5.hexdigest(),
+    "sha1": hash_sha1.hexdigest(),
+    "sha256": hash_sha256.hexdigest(),
+    "time": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
+    "username": username   
+}
 
             # Store data for certificate
             app.config["LAST_RESULT"] = hash_result
@@ -65,7 +66,7 @@ def download():
     if not data:
         return "No data available. Please generate hash first."
 
-    file_path = "certificate.pdf"
+    username = data.get("username", "Unknown User")
 
     doc = SimpleDocTemplate(file_path)
     styles = getSampleStyleSheet()
@@ -92,8 +93,7 @@ def download():
 
     content.append(Paragraph("Place: Gwalior", styles["Normal"]))
     content.append(Spacer(1, 20))
-
-    content.append(Paragraph("Adv. Vipul Jain", styles["Normal"]))
+    content.append(Paragraph(f"Adv. {username}", styles["Normal"]))
     content.append(Paragraph("Cyber Law Consultant", styles["Normal"]))
 
     doc.build(content)
