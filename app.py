@@ -29,30 +29,29 @@ def index():
         username = request.form.get("username")
         file = request.files.get("file")
 
-        if file:
-            filename = file.filename
+if file:
+    filename = file.filename
 
-            hash_md5 = hashlib.md5()
-            hash_sha1 = hashlib.sha1()
-            hash_sha256 = hashlib.sha256()
+    hash_md5 = hashlib.md5()
+    hash_sha1 = hashlib.sha1()
+    hash_sha256 = hashlib.sha256()
 
-            while True:
-                chunk = file.read(4096)
-                if not chunk:
-                    break
-                hash_md5.update(chunk)
-                hash_sha1.update(chunk)
-                hash_sha256.update(chunk)
+    while True:
+        chunk = file.read(4096)
+        if not chunk:
+            break
+        hash_md5.update(chunk)
+        hash_sha1.update(chunk)
+        hash_sha256.update(chunk)
 
- hash_result = {
-    "filename": filename,
-    "md5": hash_md5.hexdigest(),
-    "sha1": hash_sha1.hexdigest(),
-    "sha256": hash_sha256.hexdigest(),
-    "time": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
-    "username": username   
-}
-
+    hash_result = {
+        "filename": filename,
+        "md5": hash_md5.hexdigest(),
+        "sha1": hash_sha1.hexdigest(),
+        "sha256": hash_sha256.hexdigest(),
+        "time": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
+        "username": username
+    }
             # Store data for certificate
             app.config["LAST_RESULT"] = hash_result
 
